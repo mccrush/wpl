@@ -20,7 +20,7 @@
     <span class="ms-2">{{ task.title }}</span>
 
     <div class="wpl-btn-group btn-group">
-      <BtnEdit />
+      <BtnEdit @click="$emit('edit-task', { task })" />
       <BtnTrash @click="$emit('delete-task', { task })" />
     </div>
   </div>
@@ -31,7 +31,7 @@ import BtnEdit from './ui/buttons/BtnEdit.vue'
 import BtnTrash from './ui/buttons/BtnTrash.vue'
 export default {
   components: { BtnEdit, BtnTrash },
-  emits: ['delete-task'],
+  emits: ['delete-task', 'edit-task'],
   props: ['task'],
   computed: {
     taskDone() {
