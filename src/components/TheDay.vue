@@ -1,7 +1,12 @@
 <template>
   <div class="col w-col wpl-vh-100 p-2">
     <h6 class="text-center mb-3">{{ day.title }}</h6>
-    <TheTask v-for="task in tasks" :key="task.id" :task="task" />
+    <TheTask
+      v-for="task in tasks"
+      :key="task.id"
+      :task="task"
+      @delete-task="deleteTask"
+    />
     <Transition>
       <div class="form-create mt-2">
         <input
@@ -48,7 +53,7 @@ export default {
   components: {
     TheTask
   },
-  emits: ['add-task'],
+  emits: ['add-task', 'delete-task'],
   props: ['day', 'tasks'],
   data() {
     return {
@@ -98,6 +103,15 @@ export default {
           task
         })
       }
+    },
+
+    deleteTask({ task }) {
+      this.$emit('delete-task', { task })
+
+      this.$store.dispatch('deleteTask', {
+        year: 2025,
+        id: task.id
+      })
     }
   }
 }

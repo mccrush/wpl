@@ -6,6 +6,7 @@
       :day="day"
       :tasks="getTasksFiltersByDay(day.id)"
       @add-task="addTask"
+      @delete-task="deleteTask"
     />
   </div>
 </template>
@@ -40,6 +41,9 @@ export default {
     },
     addTask({ task }) {
       this.tasks.push(task)
+    },
+    deleteTask({ task }) {
+      this.tasks = this.tasks.filter(el => el.id !== task.id)
     }
   },
   watch: {

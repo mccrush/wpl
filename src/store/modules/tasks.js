@@ -73,6 +73,21 @@ export default {
       }
     },
 
+    async deleteTask({ commit }, { year, id }) {
+      try {
+        commit('setLoadingData', true)
+        const response = await supabase
+          .from(year)
+          .delete()
+          .eq('id', id)
+
+      } catch (error) {
+        console.error('tasks.js deleteTask()', error)
+      } finally {
+        commit('setLoadingData', false)
+      }
+    },
+
     async addTask({ commit }, { year, task }) {
       try {
         commit('setLoadingData', true)
