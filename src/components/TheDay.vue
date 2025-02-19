@@ -18,6 +18,26 @@
         @keyup.enter="createTask"
       />
 
+      <div v-if="mod === 'edit'" class="d-flex mt-1">
+        <div class="input-group input-group-sm">
+          <select class="form-select" v-model="year">
+            <option v-for="y in dataYears" :key="y" :value="y">
+              {{ y }}
+            </option>
+          </select>
+          <select class="form-select" v-model="week">
+            <option v-for="w in dataWeeks" :key="w" :value="w">
+              {{ w }}
+            </option>
+          </select>
+          <select class="form-select" v-model="day">
+            <option v-for="d in dataDays" :key="d.id" :value="d.id">
+              {{ d.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
       <div class="d-flex mt-1">
         <div class="input-group input-group-sm w-75">
           <select class="form-select" v-model="timeH">
@@ -44,6 +64,9 @@
 
 <script>
 import { getShortYear } from './../helpers/getShortYear'
+import { dataYears } from './../helpers/dataYears'
+import { dataWeeks } from './../helpers/dataWeeks'
+import { dataDays } from './../helpers/dataDays'
 import { dataHours } from './../helpers/dataHours'
 import { dataMinutes } from './../helpers/dataMinutes'
 //import { getWeek } from './../helpers/getWeek'
@@ -55,12 +78,18 @@ export default {
     TheTask
   },
   emits: ['add-task', 'delete-task'],
-  props: ['day', 'tasks'],
+  props: ['dayOfWeek', 'tasks'],
   data() {
     return {
       title: '',
+      year: 2025,
+      week: 1,
+      day: 1,
       timeH: '',
       timeM: '',
+      dataYears,
+      dataWeeks,
+      dataDays,
       dataHours,
       dataMinutes,
       showForm: false,
@@ -78,7 +107,7 @@ export default {
       return (
         getShortYear() +
         String(this.selectWeek).padStart(2, '0') +
-        String(this.day.id).padStart(2, '0') +
+        String(this.dayOfWeek.id).padStart(2, '0') +
         String(this.tasks.length + 1).padStart(2, '0')
       )
     },
@@ -86,6 +115,9 @@ export default {
       this.showForm = true
       this.mod = 'edit'
       this.title = task.title
+      this.year = task.year
+      this.week = task.week
+      this.day = task.day
       this.timeH = task.timeH
       this.timeM = task.timeM
       this.tempTask = task
@@ -94,6 +126,9 @@ export default {
       if (this.mod === 'edit') {
         const task = this.tempTask
         task.title = this.title
+        task.year = this.year
+        task.week = this.week
+        task.day = this.day
 
         if (this.timeH && this.timeM) {
           task.timeH = this.timeH
@@ -106,8 +141,12 @@ export default {
         })
 
         this.title = ''
+        this.year = 2025
+        this.week = 1
+        this.day = 1
         this.timeH = ''
         this.timeM = ''
+
         this.tempTask = null
         this.mod = 'create'
       } else if (this.mod === 'create') {
@@ -116,8 +155,9 @@ export default {
           task.id = this.getId()
 
           task.title = this.title
+          task.year = new Date().getFullYear()
           task.week = this.selectWeek
-          task.day = this.day.id
+          task.day = this.dayOfWeek.id
 
           if (this.timeH && this.timeM) {
             task.timeH = this.timeH
@@ -125,6 +165,9 @@ export default {
           }
 
           this.title = ''
+          this.year = 2025
+          this.week = 1
+          this.day = 1
           this.timeH = ''
           this.timeM = ''
 

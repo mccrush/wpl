@@ -4,7 +4,11 @@
       v-for="w in 52"
       :key="w"
       class="btn btn-sm btn-light flex-fill"
-      :class="{ active: w == selectWeek, 'fw-bold': w == currentWeek }"
+      :class="{
+        active: w == selectWeek,
+        'fw-bold': w == currentWeek,
+        'text-body-tertiary': w < currentWeek
+      }"
       @click="setSelectWeek(w)"
     >
       {{ w < 10 ? '0' + w : w }}

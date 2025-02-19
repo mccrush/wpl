@@ -23,6 +23,7 @@ export default {
           .from(year)
           .select()
           .eq('week', week)
+          .order('id', { ascending: false })
 
         if (error) throw error
         if (data) {
