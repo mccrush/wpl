@@ -3,7 +3,7 @@
     <TheDay
       v-for="day in dataDays"
       :key="day.id"
-      :day="day"
+      :dayOfWeek="day"
       :tasks="getTasksFiltersByDay(day.id)"
       @add-task="addTask"
       @delete-task="deleteTask"
